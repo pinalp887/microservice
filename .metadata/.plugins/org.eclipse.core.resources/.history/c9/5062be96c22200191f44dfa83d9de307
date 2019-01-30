@@ -1,0 +1,24 @@
+package com.cignex.controller;
+
+import java.math.BigDecimal;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+import com.cignex.model.CurrencyConversionbean;
+
+@RestController
+public class CurrencyConversionController {
+	@GetMapping("currency-conversion/from/{from}/to/{to}/quantity/{quantity}")
+	private CurrencyConversionbean getConversionbean(@PathVariable String from, @PathVariable String to,
+			@PathVariable BigDecimal quantity) {
+		ResponseEntity<CurrencyConversionbean> responseEntity = new RestTemplate()
+				.getForEntity("http://localhost:8000/currency-exchange/from/{from}/to/{to}", CurrencyConversionbean.class);
+		CurrencyConversionbean bean = responseEntity.getBody();
+		return new CurrencyConversionbean(bean.getId(), from, to, bean.getConversionMultiple(), quantity,
+				quantity.multiply(bean.getClaculatedAmount()), bean.getPort());
+	}
+}

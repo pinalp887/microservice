@@ -1,0 +1,279 @@
+package com.book;
+
+import java.util.Scanner;
+
+import javax.swing.JOptionPane;
+
+public class NemoReefTourMenu {
+	private static final int ENTER_BOOKING = 1;
+	private static final int DISPLAY_BOOKINGS = 2;
+	private static final int DISPLAY_STATISTICS = 3;
+	private static final int SEARCH_BOOKINGS = 4;
+	private static final int SORT_BOOKINGS = 5;
+	private static final int EXIT = 6;
+	private static final int TEN_PERCENT = 10;
+	private static final int FIFTEEN_PERCENT = 15;
+	private static final int TWENTY_PERCENT = 20;
+	private static final double ticket_price = 87.50;
+	public static final int ZERO=0;
+	private static Booking booking[] = new Booking[10];
+	private static Scanner scanner = new Scanner(System.in);
+	public static int i = 0;
+	public static int count = 0;
+
+	public static void getMenuItems() {
+		System.out.println("\nPlease select from the following");
+		System.out.println(ENTER_BOOKING + ". Enter booking name and number of passengers");
+		System.out.println(DISPLAY_BOOKINGS + ". Display all booking names, number of passengers and charges");
+		System.out.println(DISPLAY_STATISTICS + ". Display Statistics");
+		System.out.println(SEARCH_BOOKINGS + ". Search for booking");
+		System.out.println(SORT_BOOKINGS + ". Sort the bookings");
+		System.out.println(EXIT + ". Exit the application");
+		System.out.print("Enter choice==> ");
+
+	}
+
+	private static void processBooking() {
+		int choice = scanner.nextInt();
+		while (choice > ZERO) {
+
+			switch (choice) {
+			case ENTER_BOOKING:
+				enterBooking();
+				count++;
+				finalMethod();
+				break;
+			case DISPLAY_BOOKINGS:
+				getAll();
+				finalMethod();
+				break;
+			case DISPLAY_STATISTICS:
+				displayStatistics();
+				finalMethod();
+				break;
+			case SEARCH_BOOKINGS:
+				searchBookings();
+				finalMethod();
+				break;
+			case SORT_BOOKINGS:
+				sortBookings();
+				finalMethod();
+			case EXIT:
+				System.out.println("program written by ArvindBhai Handa roll number id 123456");
+				System.exit(0);
+			default:
+				System.out.println("enter valid number");
+				finalMethod();
+				break;
+			}
+
+		}
+	}
+
+	private static void sortBookings() {
+		if (count < 2) {
+			JOptionPane.showMessageDialog(null, "Error -please enter atleast two bookings to sort", "Input Menu Choice",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		Booking[] sort = sortBooking(booking);
+		for (Booking booking : sort) {
+			if (booking != null) {
+				System.out.println(
+						booking.getBookingName() + "\t\t" + booking.getPassengers() + "\t\t" + booking.getCharge());
+			}
+		}
+	}
+
+	private static Booking[] sortBooking(Booking[] booking) {
+		Booking tempBooking = new Booking();
+		for (int j = 0; j < i; j++) {
+			for (int k = j + 1; k < i; k++) {
+				if (booking[j].getBookingName().compareToIgnoreCase(booking[k].getBookingName()) > 0) {
+					tempBooking = booking[j];
+					booking[j] = booking[k];
+					booking[k] = tempBooking;
+				}
+			}
+		}
+		return booking;
+
+	}
+
+	private static int getMax(Booking arrayMax[]) {
+		int max = arrayMax[0].getPassengers();
+
+		for (int j = 1; j < i; j++) {
+			if (arrayMax[j].getPassengers() > max) {
+				max = arrayMax[j].getPassengers();
+
+			}
+		}
+		return max;
+	}
+
+	private static int getMin(Booking arrayMin[]) {
+		int min = arrayMin[0].getPassengers();
+		for (int j = 1; j < i; j++) {
+			if (arrayMin[j].getPassengers() < min) {
+				min = arrayMin[j].getPassengers();
+
+			}
+		}
+		return min;
+	}
+
+	private static void displayStatistics() {
+		showErrorDialog();
+		int min = getMin(booking);
+		int max = getMax(booking);
+		System.out.println(max + " " + min);
+		for (Booking booking : booking) {
+			if (booking != null) {
+				if (booking.getPassengers() == min) {
+
+					System.out.println("\t\t" + booking.getBookingName() + " has the minium number of  "
+							+ booking.getPassengers() + "passengers");
+				}
+			}
+
+		}
+		for (Booking booking : booking) {
+			if (booking != null) {
+				if (booking.getPassengers() == max) {
+
+					System.out.println("\t\t" + booking.getBookingName() + " has the maximum number of  "
+							+ booking.getPassengers() + "passengers");
+				}
+			}
+		}
+		int sum = 0;
+		int count = 0;
+		double sumOfCharges = 0;
+		for (Booking booking : booking) {
+			if (booking != null) {
+				sum += booking.getPassengers();
+				sumOfCharges += booking.getCharge();
+				count++;
+			}
+		}
+		double ave = sum / count;
+		System.out.println("\t\t average number of passengers is " + ave);
+		System.out.println("\t\t the total cahrges are $" + sumOfCharges);
+	}
+
+	private static void searchBookings() {
+		showErrorDialog();
+		int flag = 0;
+
+		String name = JOptionPane.showInputDialog(null, "Please enter the booking name", "Input Booking Name",
+				JOptionPane.DEFAULT_OPTION);
+		if (name.equals("")) {
+			JOptionPane.showMessageDialog(null, "Error -Please enter the booking name", "Input Menu Choice",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		for (Booking booking : booking) {
+			if (booking.getBookingName().equals(name)) {
+				System.out.println(" booking name find with" + " ' " + booking.getBookingName() + " ' "
+						+ "and total passengers are " + booking.getPassengers() + " and total charges are $"
+						+ booking.getCharge());
+				flag = 1;
+				break;
+			} else {
+				flag = 0;
+			}
+			if (flag == 0) {
+				JOptionPane.showMessageDialog(null, "Error -" + name + " not found ", "Input Menu Choice",
+						JOptionPane.ERROR_MESSAGE);
+				System.out.println("Booking details is not found for name : " + name);
+				return;
+			}
+
+		}
+	}
+
+	private static void showErrorDialog() {
+		if (count == 0) {
+			JOptionPane.showMessageDialog(null, "Error -please enter atleast one booking", "Input Menu Choice",
+					JOptionPane.ERROR_MESSAGE);
+			finalMethod();
+			return;
+		}
+	}
+
+	private static void enterBooking() {
+		if (i <= 10) {
+			System.out.println("in enter booking");
+			String bookingName = JOptionPane.showInputDialog(null, "Please enter the booking name",
+					"Input Booking Name", JOptionPane.DEFAULT_OPTION);
+			if (bookingName.equals("")) {
+				JOptionPane.showMessageDialog(null, "Error -Booking name can not be blank", "Input Menu Choice",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			String passenger = JOptionPane.showInputDialog(null, "please enter number of passenger",
+					"input passagers number", JOptionPane.DEFAULT_OPTION);
+			if (passenger.equals("")) {
+				JOptionPane.showMessageDialog(null, "Error - number of passenger cannot be blank", "Input Menu Choice",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			int passengers = Integer.parseInt(passenger);
+			double total_charge = calculateCharge(passengers);
+
+			booking[i] = new Booking(bookingName, Integer.parseInt(passenger), total_charge);
+
+			i++;
+			System.out.println(i + " i i s");
+		} else {
+			JOptionPane.showMessageDialog(null, "Error - Maximum numbers of bookings has been reached",
+					"Input Menu Choice", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	private static double calculateCharge(int passengers) {
+		double amount = 0;
+		double discount = 0;
+		double total = 0;
+		if (passengers >= 3 && passengers <= 5) {
+			amount = passengers * ticket_price;
+			discount = amount * TEN_PERCENT / 100;
+			total = amount - discount;
+		} else if (passengers >= 6 && passengers <= 10) {
+			amount = passengers * ticket_price;
+			discount = amount * FIFTEEN_PERCENT / 100;
+			total = amount - discount;
+		} else if (passengers >= 11) {
+			amount = passengers * ticket_price;
+			discount = amount * TWENTY_PERCENT / 100;
+			total = amount - discount;
+		} else {
+			System.out.println(passengers + " not getting any discount");
+			total = passengers * ticket_price;
+		}
+		return total;
+	}
+
+	private static void getAll() {
+		showErrorDialog();
+		for (int j = 0; j < i; j++) {
+			Booking bookin = booking[j];
+			System.out.println(
+					bookin.getBookingName() + " \t\t" + bookin.getPassengers() + "\t\t" + "$" + bookin.getCharge());
+
+		}
+	}
+
+	private static void finalMethod() {
+		getMenuItems();
+		processBooking();
+
+	}
+
+	public static void main(String[] args) {
+		finalMethod();
+	}
+
+}

@@ -1,0 +1,5 @@
+package com.cignex.model;
+
+public class ExchangeValue {
+
+}

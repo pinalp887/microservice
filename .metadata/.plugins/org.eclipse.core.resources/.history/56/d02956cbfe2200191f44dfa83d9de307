@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: currency-exchange-service  jpa:    show-sql: true
+server:  port: 8000
+eureka:  client:    service-url:      default-zone: flase

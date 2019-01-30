@@ -1,0 +1,7 @@
+package com.example.demo.bean;
+
+public class LimitConfiguration {
+
+	int maximum;
+	int minium;
+}

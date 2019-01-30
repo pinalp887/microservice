@@ -1,0 +1,15 @@
+package com.book;
+
+import java.util.Scanner;
+
+import javax.swing.JOptionPane;
+
+public class Test {
+
+		public static void main(String[] args) {
+
+			JOptionPane.showMessageDialog(null, "Error -please enter pessangers", "Input Menu Choice",
+					JOptionPane.ERROR_MESSAGE);
+		}
+
+}

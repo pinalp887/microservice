@@ -1,0 +1,6 @@
+package com.book;
+
+public class Test {
+	public static int i = 0;
+
+}

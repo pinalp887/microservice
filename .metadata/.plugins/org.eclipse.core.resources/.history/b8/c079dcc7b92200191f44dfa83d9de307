@@ -1,0 +1,10 @@
+package com.cignex.controller;
+
+import org.springframework.core.env.Environment;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class CurrencyController {
+
+	private Environment environment;
+}

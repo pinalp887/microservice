@@ -1,0 +1,13 @@
+package com.cignex.model;
+
+import java.math.BigDecimal;
+
+public class CurrencyConversionbean {
+
+	private long id;
+	private String from;
+	private String to;
+	private BigDecimal conversionMultiple;
+	private BigDecimal quantity;
+	private BigDecimal claculatedAmount;
+}

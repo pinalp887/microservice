@@ -1,0 +1,39 @@
+package com.cignex;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.stereotype.Component;
+
+import com.netflix.zuul.ZuulFilter;
+import com.netflix.zuul.context.RequestContext;
+
+import ch.qos.logback.classic.Logger;
+
+@Component
+public class ZuulLoggingFilter extends ZuulFilter{
+
+	private Logger logger=org.slf4j.LoggerFactory
+	@Override
+	public boolean shouldFilter() {
+		return true;
+	}
+
+	@Override
+	public Object run() {
+		HttpServletRequest request = RequestContext.getCurrentContext().getRequest();
+		
+		return null;
+	}
+
+	@Override
+	public String filterType() {
+		return "pre";
+	}
+
+	@Override
+	public int filterOrder() {
+		return 1;
+	}
+
+	
+}

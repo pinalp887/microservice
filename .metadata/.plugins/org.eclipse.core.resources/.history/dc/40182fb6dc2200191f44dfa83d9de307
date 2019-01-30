@@ -1,0 +1,5 @@
+package com.cignex;
+
+public class ZuulLoggingFilter {
+
+}

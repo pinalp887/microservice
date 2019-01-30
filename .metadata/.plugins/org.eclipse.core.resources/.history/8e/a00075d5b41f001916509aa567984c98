@@ -1,0 +1,19 @@
+package com.cignex.proxyservice;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import com.cignex.model.ExchangeValue;
+
+@FeignClient(name="currency-exchange-service",url="localhost:8000")
+public interface CurrencyExchangeServiceProxy {
+
+	@GetMapping("/currency-exchange/from/{from}/to/{to}")
+	public ExchangeValue getEchangeValue(@PathVariable String from, @PathVariable String to) {
+		ExchangeValue exchageValue=exchangeValueRepository.findByFromAndTo(from, to);
+		exchageValue.setPort(Integer.parseInt(environment.getProperty("local.server.port")));
+		return exchageValue;
+
+	}
+}

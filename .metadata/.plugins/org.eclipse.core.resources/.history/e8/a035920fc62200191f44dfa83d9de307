@@ -1,0 +1,5 @@
+package com.cignex.proxyservice;
+
+public interface CurrencyExchangeServiceProxy {
+
+}

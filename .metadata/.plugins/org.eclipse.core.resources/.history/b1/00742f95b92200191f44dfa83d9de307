@@ -1,0 +1,5 @@
+package com.cignex.repository;
+
+public interface ExhangeValueRepository {
+
+}

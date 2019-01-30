@@ -1,0 +1,11 @@
+package com.cignex.proxyservice;
+
+import org.springframework.cloud.openfeign.FeignClient;
+
+import com.cignex.model.CurrencyConversionbean;
+
+@FeignClient(name="currency-conversion-service-prac",url="localhost:8000")
+public interface CurrencyExchangeServiceProxy {
+
+	public CurrencyConversionbean convertCurrency();
+}

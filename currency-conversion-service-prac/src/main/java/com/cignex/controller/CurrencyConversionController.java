@@ -1,0 +1,48 @@
+package com.cignex.controller;
+
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+import com.cignex.model.CurrencyConversionbean;
+import com.cignex.proxyservice.*;
+
+@RestController
+public class CurrencyConversionController {
+	@Autowired
+	private CurrencyExchangeServiceProxy proxy;
+	private Logger logger=LoggerFactory.getLogger(this.getClass());
+	@GetMapping("currency-conversion/from/{from}/to/{to}/quantity/{quantity}")
+	public CurrencyConversionbean getConversionbean(@PathVariable String from, @PathVariable String to,
+			@PathVariable BigDecimal quantity) {
+		Map<String, String> urivariable = new HashMap<String, String>();
+		urivariable.put("from", from);
+		urivariable.put("to", to);
+		ResponseEntity<CurrencyConversionbean> responseEntity = new RestTemplate().getForEntity(
+				"http://localhost:8000/currency-exchange/from/{from}/to/{to}", CurrencyConversionbean.class,
+				urivariable);
+		CurrencyConversionbean bean = responseEntity.getBody();
+		return new CurrencyConversionbean(bean.getId(), from, to, bean.getConversionMultiple(), quantity,
+				quantity.multiply(bean.getConversionMultiple()), bean.getPort());
+	}
+
+	@GetMapping("currency-conversion-feign/from/{from}/to/{to}/quantity/{quantity}")
+	public CurrencyConversionbean getConversionbean1(@PathVariable String from, @PathVariable String to,
+			@PathVariable BigDecimal quantity) {
+		System.out.println("in controller ");
+		CurrencyConversionbean conversionbean = proxy.convertCurrency(from, to);
+		logger.info("response {"+conversionbean+"}");
+		return new CurrencyConversionbean(conversionbean.getId(), from, to, conversionbean.getConversionMultiple(),
+				quantity, quantity.multiply(conversionbean.getConversionMultiple()), conversionbean.getPort());
+
+	}
+}

@@ -1,0 +1,14 @@
+package com.book;
+
+public class Test {
+	public static int i = 1;
+	public static void main(String[] args) {
+		double am=4*87.50;
+	
+		
+		System.out.println(am);
+		double fam=am*10/100;
+		double fin=am-fam;
+		System.err.println(fin);
+	}
+}
